@@ -3,9 +3,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 [RequireComponent(typeof(WaterFloat))]
-public class WaterBoat : MonoBehaviour
+public class WaterBoat : NetworkBehaviour
 {
     //visible Properties
     public Transform Motor;
@@ -39,11 +40,13 @@ public class WaterBoat : MonoBehaviour
         var steer = 0;
 
         //steer direction [-1,0,1]
+        if(isLocalPlayer)
+        {
         if (Input.GetKey(KeyCode.A))
             steer = 1;
         if (Input.GetKey(KeyCode.D))
             steer = -1;
-
+        }
 
         //Rotational Force
         Rigidbody.AddForceAtPosition(steer * transform.right * SteerPower / 100f, Motor.position);
